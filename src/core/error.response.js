@@ -24,10 +24,13 @@ class ErrorResponse extends Error {
 }
 
 class BadRequestError extends ErrorResponse {
-  constructor(
-    message = messages.BAD_REQUEST,
-    status = statusCode.BAD_REQUEST
-  ) {
+  constructor(message = messages.BAD_REQUEST, status = statusCode.BAD_REQUEST) {
+    super(message, status);
+  }
+}
+
+class NotFoundError extends ErrorResponse {
+  constructor(message = messages.NOT_FOUND, status = statusCode.NOT_FOUND) {
     super(message, status);
   }
 }
@@ -38,10 +41,19 @@ class ConFiflictError extends ErrorResponse {
   }
 }
 
+class UnauthorizedError extends ErrorResponse {
+  constructor(
+    message = messages.UNAUTHORIZED,
+    status = statusCode.UNAUTHORIZED
+  ) {
+    super(message, status);
+  }
+}
+
 module.exports = {
   ErrorResponse,
   BadRequestError,
   ConFiflictError,
-  statusCode,
-  messages,
+  UnauthorizedError,
+  NotFoundError,
 };
