@@ -39,7 +39,7 @@ const authentication = async (req, res, next) => {
   }
 
   //Lấy access token từ header
-  console.log("userId:", userId);
+
   const keyStore = await findByUserId(userId);
 
   if (!keyStore) {
@@ -55,11 +55,12 @@ const authentication = async (req, res, next) => {
 
   try {
     const decodeUser = jwt.verify(accessToken, keyStore.publicKey);
-    console.log("decodeUser:", decodeUser);
+
     if (userId !== decodeUser.userId) {
       throw new UnauthorizedError("ID người dùng không hợp lệ");
     }
     req.keyStore = keyStore;
+    req.user = decodeUser;
 
     return next();
   } catch (error) {

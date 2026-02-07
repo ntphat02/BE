@@ -1,0 +1,15 @@
+const ProductService = require("../services/product.service");
+const { Created } = require("../core/success.response");
+class ProductController {
+  createProduct = async (req, res, next) => {
+    new Created({
+      message: "Create product success",
+      metaData: await ProductService.createProduct(req.body.product_type, {
+        ...req.body,
+        product_shop: req.user.userId,
+      }),
+    }).send(res);
+  };
+}
+
+module.exports = new ProductController();
