@@ -1,18 +1,25 @@
 const AccessService = require("../services/access.service");
+const { Created } = require("../core/success.response");
 class AccessController {
-  signUp = async (req, res, next) => {
-    try {
-      console.log("[P] :: signUp ", req.body);
-      const result = await AccessService.signUp(req.body);
-      return res.status(201).json({
+  login = async (req, res, next) => {
+    new Created({
+      message: "Đăng nhập thành công",
+      metaData: await AccessService.login(req.body),
+    }).send(res);
+  };
 
-        result: result,
-      });
-    } catch (error) {
-      return res.status(error.code).json({
-        message: error.message,
-      });
-    }
+  signUp = async (req, res, next) => {
+    new Created({
+      message: "Đăng ký thành công",
+      metaData: await AccessService.signUp(req.body),
+    }).send(res);
+  };
+
+  logout = async (req, res, next) => {
+    new Created({
+      message: "Đăng xuất thành công",
+      metaData: await AccessService.logout({ keyStore: req.keyStore }),
+    }).send(res);
   };
 }
 
