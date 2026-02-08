@@ -1,6 +1,12 @@
 const { clothing, product, electronic } = require("../models/product.model");
 const { BadRequestError } = require("../core/error.response");
-
+const {
+  findAllDraftsForShop,
+  publicProductByShop,
+  findAllPublicForShop,
+  unPublicProductByShop,
+  searchProducts,
+} = require("../models/repository/product.repo");
 class ProductFactory {
   static async createProduct(type, payload) {
     switch (type) {
@@ -38,6 +44,30 @@ class Product {
   async createProduct(product_id) {
     return await product.create({ ...this, product_id });
   }
+
+  //query
+  static async findAllDrafForShop({ product_shop, limit = 50, skip = 0 }) {
+    const query = { product_shop, isDraft: true };
+    return await findAllDraftsForShop({ query, limit, skip });
+  }
+
+  static async findAllPublicForShop({ product_shop, limit = 50, skip = 0 }) {
+    const query = { product_shop, isPublished: true };
+    return await findAllPublicForShop({ query, limit, skip });
+  }
+
+  static async searchProducts({ keySearch }) {
+    return await searchProducts({ keySearch });
+  }
+
+  //put
+  static async publicProductByShop({ product_shop, product_id }) {
+    return await publicProductByShop({ product_shop, product_id });
+  }
+
+  static async unPublicProductByShop({ product_shop, product_id }) {
+    return await unPublicProductByShop({ product_shop, product_id });
+  }
 }
 
 class Cloting extends Product {
@@ -71,4 +101,4 @@ class Electronics extends Product {
   }
 }
 
-module.exports = ProductFactory;
+module.exports = { ProductFactory, Product };

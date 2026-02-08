@@ -6,7 +6,7 @@ const router = express.Router();
 router.use(apiKey);
 // check perrmissions
 router.use(permissions("0000"));
-router.use("/auth", require("./access"));
 router.use("/product", require("./product"));
+router.use("/auth", require("./access"));
 
 module.exports = router;
